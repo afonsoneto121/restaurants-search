@@ -1,5 +1,7 @@
-import React from 'react';
+import Skeleton from '../Skeleton';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 
 
 const Card = styled.div`
@@ -19,10 +21,21 @@ color: #ffffff;
 font-size: 16px;
 `;
 const ImageCard = ({ photo, title }) => {
+    const [imageLoaded, setImageLoaded] = useState(false);
+
+    useEffect(() => {
+        const newImage = new Image();
+        newImage.src = photo;
+        newImage.onload = () => setImageLoaded(true);
+    }, [photo]);
     return (
-        <Card photo={photo}>
-            <Title>{title} </Title>
-        </Card>
+        <>{imageLoaded ? (
+            <Card photo={photo}>
+                <Title>{title} </Title>
+            </Card>)
+            : (<Skeleton width='100px' height='100px' />)
+        }
+        </>
     )
 }
 
