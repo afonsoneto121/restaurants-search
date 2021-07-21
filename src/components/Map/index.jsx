@@ -33,7 +33,7 @@ export const MapContainer = (props) => {
 
         const request = {
             location: center,
-            radius: '20000',
+            radius: '2000',
             type: ['restaurant']
         };
         service.nearbySearch(request, (result, status) => {
@@ -84,7 +84,9 @@ export const MapContainer = (props) => {
             setStateInfo({ visible: false })
         }
     }
-
+    function searchOnDragend(mapProps, map) {
+        searchNearBy(map, map.center);
+    }
     return (
         <Map google={google}
             centerAroundCurrentLocation={true}
@@ -92,6 +94,7 @@ export const MapContainer = (props) => {
             onRecenter={onMapReady}
             zoom={15}
             onClick={onClickMap}
+            onDragend={searchOnDragend}
             {...props}
         >
             {restaurants.map((value) => (
@@ -111,9 +114,10 @@ export const MapContainer = (props) => {
             <InfoWindow
                 visible={visible}
                 marker={marker}
+
             >
                 {visible && <ContaineInfo>
-                    <TitleInfo>{info.name}</TitleInfo>
+                    <TitleInfo >{info.name}</TitleInfo>
                     <ImageInfo
                         src={info.urlImg}
                     />
